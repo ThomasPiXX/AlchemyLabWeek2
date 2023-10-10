@@ -14,16 +14,18 @@ const merkleTree = new MerkleTree(niceList);
 const root = merkleTree.getRoot();
 
 // paste the hex string in here, without the 0x prefix
-const MERKLE_ROOT = 'root';
+const MERKLE_ROOT = root;
 
 app.post('/gift', (req, res) => {
   // grab the parameters from the front-end here
   const body = req.body;
   const {name, proof} = body;
-  verifyProof(name, proof, MerkleTree);
 
   // TODO: prove that a name is in the list 
-  const isInTheList = verifyProof(name, proof, MerkleTree);
+  const isInTheList = verifyProof(proof, name, MERKLE_ROOT);
+
+  console.log(isInTheList);
+
   if(isInTheList) {
     res.send("You got a toy robot!");
   }
